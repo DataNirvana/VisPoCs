@@ -1,0 +1,151 @@
+﻿
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,  initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>PoCs Visualisation</title>
+    <meta property="og:title" content="Data Visualisation" />
+    <meta property="og:site_name" content="visualise.DataNirvana.org" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://visualise.DataNirvana.org" />
+    <meta property="og:image" content="http://visualise.DataNirvana.org/favicon.icon" />
+    <meta property="og:description" content="Data Visualisation" />
+    <link rel="shortcut icon" href="https://visualise.datanirvana.org/favicon.ico" />
+
+    <link href="Styles/Site.min.css?v=269" rel="stylesheet" type="text/css" />
+    <link href="https://datanirvana.github.io/dn.js/Styles/DN.min.css?v=269" rel="stylesheet" type="text/css" charset='utf-8' />
+    <link href="Styles/Vis.min.css?v=269" rel="stylesheet" type="text/css" charset='utf-8' />
+    <link href="Styles/VisPoCs.min.css?v=269" rel="stylesheet" type="text/css" charset='utf-8' />
+    <link href="https://datanirvana.github.io/dn.js/Styles/leaflet.min.css?v=269" rel="stylesheet" type="text/css" charset='utf-8' />
+
+    <script src="https://datanirvana.github.io/dn.js/Scripts/d3.min.js?v=269" type="text/javascript"></script>
+    <script src="https://datanirvana.github.io/dn.js/Scripts/ColourBrewer.min.js?v=269" type="text/javascript" charset='utf-8'></script>
+    <script src="https://datanirvana.github.io/dn.js/Scripts/leaflet.min.js?v=269" type="text/javascript" charset='utf-8'></script>
+    <script src="https://datanirvana.github.io/dn.js/Scripts/D3RangeSlider.min.js?v=269" type="text/javascript" charset='utf-8'></script>
+    <script src="https://datanirvana.github.io/dn.js/Scripts/d3-sankey.min.js?v=269" type="text/javascript" charset='utf-8'></script>
+
+    <script src="https://datanirvana.github.io/dn.js/Scripts/DN.min.js?v=269" type="text/javascript" charset='utf-8'></script>
+    <script src="Scripts/VisPoCs.min.js?v=269" type="text/javascript" charset='utf-8'></script>
+    <script src="Scripts/VisPoCsUkraine.min.js?v=269" type="text/javascript" charset='utf-8'></script>
+
+    <style>
+        /* Override the maps style to use the blue as we show the CoO here */
+        .MapMarker2 {
+            stroke: #0072BC;
+            fill: #0072BC;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="PageContainer" class="PageContainer">
+        <div class="Page">
+            <div class="main">
+                <div style="text-align: center; position:relative;">
+                    <div class="InfoClassWrapper">
+                        <div id="InfoSplash" class="InfoClassWrapper">
+                            <span id="InfoSplashContent" style="display:;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="PageContainer FullWidthHeight">
+                    <div id="VisTitle" class="VisTitle">...</div>
+                    <div id="DataVis" class="VisWrapperPoCs">
+
+                        <div id="PoCsSummary" style="display:none;" class="ChartBox VisWrapper">
+                            <div class="ChartTitle">Summary</div>
+
+                            <div class="PoCTotal">
+                                <table class="BigLinks FullWidth VWSummaryPoCs">
+                                    <tr>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td class="NumWrapper">
+                                            <span id="TotalPersons">...</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="YearWrapper">in&nbsp;&nbsp; <span id="YearText" class="YearText">...</span></div>
+                            <div class="YearComparisonWrapper"><span id="YearComparisonDifference">...</span> <span id="YearComparisonLogic">...</span></div>
+                        </div>
+
+                        <div id="PoCsSettings" style="display:none;" class="ChartBox VisWrapper">
+                            <div class="ChartTitle">&nbsp;</div>
+                            <div class="ChartResetWrapperPoCs">
+
+                                <div class="ResetWidget">
+                                    <a href="javascript: chartGroup.ResetAll();"><img src="Images/Icon_Reset2.png" width="32" />&nbsp;&nbsp;<span class="DNButtonLinks">Reset dashboard</span></a>
+                                </div>
+
+                                <div class="ShareWidget">
+                                    <a href="javascript: urlEditor.URLShare();"><img src="Images/Share.png" width="32" />&nbsp;&nbsp;<span class="DNButtonLinks">Share link</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="PoCsFooter" style="display:none;">
+                        <div class="FooterTitle">Data sources and dashboard usage</div>
+                        <ul>
+                            <li>* Serbia and Kosovo (S/RES/1244 (1999))</li>
+                            <li>The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the United Nations (and UNDP) concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers of boundaries.</li>
+                            <li>Europe comprises 49 countries, including the EU Member States, Norway, Switzerland, Iceland and Liechtenstein, South-Eastern Europe (inc. Kosovo (S/RES/1244(1999))), Turkey and Eastern Europe</li>
+                            <li>
+                                Source: <a href="http://popstats.unhcr.org/en/overview" target="_new">Popstats.unhcr.org</a> as of December 2018:
+                                <ul>
+                                    <li><b>Refugees</b> include individuals recognised under the 1951 Convention relating to the Status of Refugees; its 1967 Protocol; the 1969 OAU Convention Governing the Specific Aspects of Refugee Problems in Africa; those recognised in accordance with the UNHCR Statute; individuals granted complementary forms of protection; or those enjoying temporary protection. Since 2007, the refugee population also includes people in a refugee-like situation.</li>
+                                    <li><b>Asylum-seekers</b> are individuals who have sought international protection and whose claims for refugee status have not yet been determined, irrespective of when they may have been lodged.</li>
+                                    <li>
+                                        <b>Internally displaced persons (IDPs)</b> are people or groups of individuals who have been forced to leave their homes or places of habitual residence, in particular as a result of, or in order to avoid
+                                        the effects of armed conflict, situations of generalised violence, violations of human rights, or natural or man-made disasters, and who have not crossed an international border. For the purposes of UNHCR's
+                                        statistics, this population only includes conflict-generated IDPs to whom the Office extends protection and/or assistance. Since 2007, the IDP population also includes people in an IDP-like situation.
+                                        <br />
+                                        In the context of Ukraine, they include vulnerable, conflict-affected persons, such as living close to the contact line in communities that include both IDPs, returnees and host populations.  
+                                        Many are at risk of displacement if their protection problems are not addressed. This conflict-affected population includes those who are unable to flee from communities in areas close to the line of contact, 
+                                        particularly vulnerable residents of isolated settlements with limited accessibility situated on both sides of the line of contact (within 20km of the line of contact), as well as vulnerable residents of NGCA’.
+                                    </li>
+                                    <li><b>Returned refugees</b> are former refugees who have returned to their country of origin spontaneously or in an organised fashion but are yet to be fully integrated. Such return would normally only take place in conditions of safety and dignity.</li>
+                                    <li><b>Returned IDPs</b> refer to those IDPs who were beneficiaries of UNHCR's protection and assistance activities and who returned to their areas of origin or habitual residence during the year.</li>
+                                    <li><b>Stateless persons</b> are defined under international law as persons who are not considered as nationals by any State under the operation of its law. In other words, they do not possess the nationality of any State. UNHCR statistics refer to persons who fall under the agency’s statelessness mandate because they are stateless according to this international definition, but data from some countries may also include persons with undetermined nationality.</li>
+                                    <li><b>Others of concern</b> refers to individuals who do not necessarily fall directly into any of the groups above, but to whom UNHCR extends its protection and/or assistance services, based on humanitarian or other special grounds.</li>
+                                </ul>
+                            </li>
+                            <li>
+                                Usage:
+                                <ul>
+                                    <li>
+                                        <b>Interactivity</b> - click on one or more bars or pie segments to explore the data shown.  Toggle the display of the map or the flow diagram using the switch in the bottom left corner.
+                                        Play the time series data by clicking on the play button underneath the chart with the annual data at the bottom. Share a link to the current view or reset the dashboard using the links in the settings panel in the bottom left corner.
+                                    </li>
+                                    <li><b>Default</b> - to show all the data for Europe include no additional parameters in the URL.</li>
+                                    <li><b>Specific countries of origin</b> - to filter the data for specific countries of origin include a list of the 3 character isocodes for the following parameter in the URL: ""&amp;FilterCoO=SYR,IRQ,AFG".</li>
+                                    <li><b>Specific countries of asylum / residence</b> - to filter the data for specific countries of asylum / residence include a list of the 3 character isocodes for the following parameter in the URL: ""&amp;FilterCoAR=DEU,SWE,GER".</li>
+                                    <li>
+                                        <b>And or Or</b> - the default mode of filtering is to filter for both the countries of origin <i>and</i> the countries of asylum/residence.
+                                        To modify this to include either the countries of origin listed or the countries of asylum / residence, include this parameter in the URL "&amp;FilterOperation=1".
+                                    </li>
+                                </ul>
+                            </li>
+                            <!--                        <li>Country population statistics from UNDESA</li>-->
+                        </ul>
+                    </div>
+
+
+                    <br /><br /><br /><br /><br /><br />
+
+                </div>
+            </div>
+        </div>            
+    </div>
+</body>
+</html>
+
+
