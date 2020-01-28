@@ -412,15 +412,20 @@ dn.defaultMapCentroid = [49, 31.38];
 dn.defaultMapZoomLevel = 1;
 dn.defaultMapBubbleRadiusPercent = 7; // reduce from 10%
 dn.defaultMapMaxZoomLevel = 8; // Granular enough for individual countries - the user cannot zoom in further than this
-dn.defaultMapBubbleSizeModifier = 0.5; //0.7; // add a slight log of the data as the range of the PoC data in Europe is huge with Turkey and Ukraine in the millions and other countries in the 100's.  Otherwise we end up with 2-3 big bubbles and the rest being tiny.
+dn.defaultMapBubbleSizeModifier = 0.6; //0.7; // add a slight log of the data as the range of the PoC data in Europe is huge with Turkey and Ukraine in the millions and other countries in the 100's.  Otherwise we end up with 2-3 big bubbles and the rest being tiny.
 dn.defaultMapMinRadius = 3; // reduced from 7 (pixels)
 
 //--02-- Set the max map value - if the data changes this will need to be regenerated in ProcessData
-maxMapValue = 1800005;
+maxMapValue = 312504;
 
 //--03-- Remove Europe from the CoAR / RoAR chart names (should no longer be necessary)
 cTitleRoARLong = cTitleRoARShort;
 cTitleCoARLong = cTitleCoARShort;
+
+//-04-- Update the default vis title
+defaultTitleStart = "Refugees and asylum seekers ";
+defaultTitleEnd = " from Ukraine";
+
 
 //--04-- Load the data
 LoadData(urlUkrainians, false);
