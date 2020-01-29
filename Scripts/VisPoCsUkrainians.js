@@ -342,7 +342,7 @@ function VisualiseData() {
             
     //--CHART-05-- Do a map CR    
     let mapGraphic = new DNChart();
-        mapGraphic.Map("CR", null, "DataVis", chartGroup, DCO["CR"][0], DCO["CR"][1], DCO["CR"][2], DCO["CR"][3], ListCR, null, "Country of asylum / residence in Europe",
+        mapGraphic.Map("CR", null, "DataVis", chartGroup, DCO["CR"][0], DCO["CR"][1], DCO["CR"][2], DCO["CR"][3], ListCR, null, "Country of asylum / residence",
             dn.defaultMapCentroid, dn.defaultMapZoomLevel, false);
 
     // Set the max value for the maps and then draw the map itself
@@ -426,6 +426,5 @@ cTitleCoARLong = cTitleCoARShort;
 defaultTitleStart = "Refugees and asylum seekers ";
 defaultTitleEnd = " from Ukraine";
 
-
-//--04-- Load the data
+//--05-- Load the data
 LoadData(urlUkrainians, false);

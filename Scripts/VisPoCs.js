@@ -1,5 +1,5 @@
 ﻿//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* 
+/*
     Code to support the visualisation of the information in an infographic for persons of concern (refugees, asylum seekers, stateless etc) to Europe.
 
     When adding new charts, just three methods need changing - LoadData, UpdateAllCharts, GetValue
@@ -375,7 +375,7 @@ var singleOptionDimension = "YE";
 // And lets declare our urlEditor here too
 var urlEditor = new DNURLEditor();
 var urlEditorChartIDs = ["YE", "GR", "CR", "CP", "ER", "CS", "PT"];
-// e.g. 
+// e.g.
 // http://localhost:57446/VisPoCs?YE=2018&FilterCoO=SYR,AFG,IRQ&FilterCoAR=SWE,NOR,DEU
 // http://localhost:57446/VisPoCs?YE=2018&FilterCoO=UKR&FilterCoAR=UKR&FilterOperation=1
 var filterListCoO = urlEditor.URLGetParameter("FilterCoO");
@@ -410,6 +410,8 @@ var cTitleCoARShort = "Country of asylum / residence";
 
 var responsiveTimeout = "";
 
+var titleListLength = 3;
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -428,7 +430,7 @@ function SetSummary() {
         let currentYear = dn.GetObjInList(objList, "ID", singleOptionDimension).Objs[0];
 
         //--2b-- Calculate the total number of people currently being displayed
-        total = chartGroup.filteredJSData.reduce((acc, b) => acc + b.Count, 0);           
+        total = chartGroup.filteredJSData.reduce((acc, b) => acc + b.Count, 0);
 
         //--2c-- Present the current total and the year
         d3.select("#TotalPersons").html(dn.NumberWithCommas(total));
@@ -438,7 +440,7 @@ function SetSummary() {
         let prevYear = currentYear - 1;
         // update the object list replacing the current year
         objList.find(x => x.ID === singleOptionDimension).Objs[0] = prevYear;
-        // Filter to show get the previous year's data        
+        // Filter to show get the previous year's data
         let prevYearFilteredData = chartGroup.GetFilteredDataBase(objList, null, null);
 
         //--3b-- Calculate the total for the previous year
@@ -504,7 +506,7 @@ function LoadData(url, isZipped) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function ProcessData(rawJSData) {
 
-    // Test the parent URL / document referral...    
+    // Test the parent URL / document referral...
     console.log("Test get parent URL: " + urlEditor.GetParentUrl());
 
     //-----AAA----- Do the Pre-filtering if the relevant parameters have been provided and update the title
@@ -519,7 +521,7 @@ function ProcessData(rawJSData) {
 
     // Data will be of this format:  therefore ensure that the count and year are  numeric
     //"YE", "CoAR", "CoO", "PopType", "Count"
-    //1990, "AUT", "VAR", "RE", 34938         
+    //1990, "AUT", "VAR", "RE", 34938
     for (let i = 0; i < rawJSData.length; i++) {
         let d = rawJSData[i];
         d.Count = +d.Count;
@@ -528,8 +530,8 @@ function ProcessData(rawJSData) {
         d.YE = +d.YE;
 
         // Apply the GR and ER (Global and Europe regions)
-        let obj = listCountriesHash[d.CoAR];  
-        let europeRegion = 0; 
+        let obj = listCountriesHash[d.CoAR];
+        let europeRegion = 0;
         if (dn.IsDefined(obj)) {
             europeRegion = +obj.ER;
         }
@@ -540,14 +542,14 @@ function ProcessData(rawJSData) {
         d.ER = europeRegion;
 
         obj = listCountriesHash[d.CoO];
-        let globalRegion = 0; 
+        let globalRegion = 0;
         if (dn.IsDefined(obj)) {
             globalRegion = +obj.GR;
         }
         d.GR = globalRegion;
 
         // Note - Population Type, CoAR and CoO - no need to do anything
-    }     
+    }
 
     // Now set the CR - the country of asylum / residence code - ListCR will be empty when added
     ListCR = ApplyCodesAndBuildLookupList(rawJSData, ListCountries, "CoAR", "CR", startCR);
@@ -569,7 +571,7 @@ function ProcessData(rawJSData) {
     chartGroup.defaultFont = "Open Sans";
     chartGroup.SetDropShadow(false);
 
-    
+
     //--02-- Build the list of years and get the latest year as a string.
     let yearList = YearList(rawJSData, "YE");
     yearDescriptionList = dn.GetYearDescriptionList(yearList);
@@ -631,7 +633,7 @@ function YearList(dataCube, yearColName) {
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//----- Builds a lookup list of ID, ID string and title values from the sourceColumn of the data cube.  Also sets the key from the source lookup list in the target column of the dataCube.  
+//----- Builds a lookup list of ID, ID string and title values from the sourceColumn of the data cube.  Also sets the key from the source lookup list in the target column of the dataCube.
 // The titles are sourced from the sourceLookupList, with the addition of "Other"
 function ApplyCodesAndBuildLookupList(dataCube, sourceLookupList, sourceColumn, targetColumn, startValue) {
 
@@ -641,7 +643,7 @@ function ApplyCodesAndBuildLookupList(dataCube, sourceLookupList, sourceColumn, 
     // Lets hash this to make it run faster - the hash is the source value (i.e - the unique values from the source column) and for each we store the ID
     let lookupHash = {};
 
-    // Loop through the data and see if the value in the source column exists already in our lookup list (and hash), if it does, then apply the code and move on, 
+    // Loop through the data and see if the value in the source column exists already in our lookup list (and hash), if it does, then apply the code and move on,
     // otherwise add the source ID, the target (numeric) ID and the title to the lookup list
     for (let i = 0; i < dataCube.length; i++) {
         let d = dataCube[i];
@@ -652,7 +654,7 @@ function ApplyCodesAndBuildLookupList(dataCube, sourceLookupList, sourceColumn, 
         // Try to get the code from the lookup list if it's been built already (e.g. the Country of asylum / residence)
         let targetObj = lookupHash[sourceVal];
 
-        // If it exists already lets set it and move on 
+        // If it exists already lets set it and move on
         if (dn.IsDefined(targetObj)) {
             d[targetColumn] = targetObj.ID;
         } else {
@@ -691,7 +693,7 @@ function ApplyCodesAndBuildLookupList(dataCube, sourceLookupList, sourceColumn, 
             lookupHash[sourceVal] = targetObj;
         }
     }
-    
+
     // Lastly, Others: Now add the other label, using the next available ID
     targetLookupList.push({
         ID: startValue,
@@ -728,8 +730,8 @@ function DoToggleMapOrFlow(cBox) {
 
     //--03-- Set the top of the Map and the Sankey accordingly
     d3.select("#SADiv").style("top", ySA + "px"); // 0
-    d3.select("#CRDiv").style("top", yCR + "px"); 
-    
+    d3.select("#CRDiv").style("top", yCR + "px");
+
     //--04-- we need to update the OffsetY of the SA and CR charts too incase these are redrawn - e.g. by an animation or on reset...
     dn.GetObjInList(chartGroup.charts, "ChartID", "SA").OffsetY = ySA;
     dn.GetObjInList(chartGroup.charts, "ChartID", "CR").OffsetY = yCR;
@@ -784,7 +786,7 @@ function DoPreFilterData(rawJSData) {
 
     // Pre-filter the data
     rawJSData = dn.PreFilterData(filterList, rawJSData, filterOperation);
-         
+
     return rawJSData;
 }
 
@@ -807,13 +809,13 @@ function SetVisTitle() {
             return v.Count > 0;
         });
 
-        let listLength = 3;
-        let fullListLonger = popTypesFilteredData.length > listLength;
+//        let listLength = 3;
+        let fullListLonger = popTypesFilteredData.length > titleListLength;
 
         if (dn.IsDefined(popTypesFilteredData) && popTypesFilteredData.length > 0) {
 
             let t = "";
-            for (let i = 0; i < popTypesFilteredData.length && i < listLength; i++) {
+            for (let i = 0; i < popTypesFilteredData.length && i < titleListLength; i++) {
 
                 if (t.length > 0) {
                     if (i === popTypesFilteredData.length - 1 && fullListLonger === false) {
@@ -841,7 +843,7 @@ function SetVisTitle() {
 
 
     if (filterListCoO.length === 0 && filterListCoAR.length === 0) {
-        // Default case - do nothing       
+        // Default case - do nothing
 
     } else if (filterListCoO.length === 1 && filterListCoAR.length === 1 && filterOperation === false && filterListCoO[0] === filterListCoAR[0]) {
         // Special case if there is just one country for CoAR and CoO, which is the same, and this is an OR operation.
@@ -863,7 +865,7 @@ function SetVisTitle() {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function AddEventListeners() {
-    
+
     //--01-- Resize the content when the browser window is resized.  Not really needed for the mobile apps, but very useful for all the debugging
     window.addEventListener('resize', function (event) {
         // We encapsulate the DrawResponsively in a timeout as otherwise we get a taking too long warning violation in Chrome...

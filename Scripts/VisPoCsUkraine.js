@@ -411,5 +411,8 @@ maxMapValue = 1800005;
 //-03-- Update the default vis title
 defaultTitleEnd = " in Ukraine";
 
-//--03-- Load the data
+//--04-- Set the title list length to be 4 instead of 3 so that refugees appear there
+titleListLength = 4;
+
+//--05-- Load the data
 LoadData(urlUkraine, false);
